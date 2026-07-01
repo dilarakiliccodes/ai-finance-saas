@@ -1,8 +1,11 @@
-from backend.routers.user_router import router as user_router
 from fastapi import FastAPI
+
 from backend.core.config import settings
 from backend.database.connection import Base, engine
 from backend.models.user import User
+from backend.routers.user_router import router as user_router
+from backend.routers.finance_router import router as finance_router
+
 
 app = FastAPI(
     title=settings.APP_NAME,
@@ -10,7 +13,11 @@ app = FastAPI(
 )
 
 Base.metadata.create_all(bind=engine)
+
 app.include_router(user_router)
+app.include_router(finance_router)
+
+
 @app.get("/")
 def home():
     return {
